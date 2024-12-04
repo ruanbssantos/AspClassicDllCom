@@ -1,0 +1,24 @@
+>64
+	REGISTRAR
+	%SystemRoot%\Microsoft.NET\Framework64\v4.0.30319\regasm F:\inetpub\wwwroot\AspClassicDllCom\RedisComClient\dll\redis-com-client.dll /tlb:redis-com-client.tlb /codebase
+
+	REMOVER
+	%SystemRoot%\Microsoft.NET\Framework64\v4.0.30319\regasm /u F:\inetpub\wwwroot\AspClassicDllCom\RedisComClient\dll\redis-com-client.dll 
+
+>32
+	REGISTRAR
+	%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\regasm F:\inetpub\wwwroot\AspClassicDllCom\RedisComClient\dll\redis-com-client.dll /tlb:redis-com-client.tlb /codebase
+
+	REMOVER
+	%SystemRoot%\Microsoft.NET\Framework\v4.0.30319\regasm /u F:\inetpub\wwwroot\AspClassicDllCom\RedisComClient\dll\redis-com-client.dll 
+ 
+via cmd, alterar os caminhos de acordo com o .NET instalado no PC, aqui já estava dentro da pasta wwwroot do IIS e a dll redis-com-client.dll
+ 
+gacutil /i StackExchange.Redis.StrongName.dll
+ 
+Caso o gacutil não esteja instalado, ele faz parte do Visual Studio ou do .NET SDK, e você pode precisar instalá-lo.
+ 
+gacutil /i Newtonsoft.Json.dll
+ 
+no meu caso o gacutil está
+ C:\Program Files (x86)\Microsoft SDKs\Windows\v10.0A\bin\NETFX 4.8 Tools\gacutil.exe
