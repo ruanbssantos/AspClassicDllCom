@@ -19,8 +19,8 @@ namespace FileStorageCOM
 
         void SetRegionEndpoint(string regionSystemName);
         bool IsBucketAccessible();
-        void UploadFile(string keyName, string filePath);
-        void UploadFileBinary(string keyName, string binaryString);
+        string UploadFile(string keyName, string filePath, bool genereteUrl = false);
+        string UploadFileBinary(string keyName, string binaryString, bool genereteUrl = false);
         void DownloadFile(string keyName, string destinationFilePath);
         string GetPreSignedUrl(string filePath, int minutesValid);
     }

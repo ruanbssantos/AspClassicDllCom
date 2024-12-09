@@ -115,11 +115,23 @@ namespace FileStorageCom
             }
         }
 
-        public void UploadFileBinary(string keyName, string binaryString)
+        public string UploadFileBinary(string keyName, string binaryString, bool genereteUrl = false)
         {
-
             try
             {
+                if (string.IsNullOrEmpty(keyName))
+                {
+                    ErrorMessage = "O nome da chave não pode ser nulo ou vazio.";
+                    throw new ArgumentException(ErrorMessage);
+
+                }
+
+                if (string.IsNullOrEmpty(binaryString))
+                {
+                    ErrorMessage = "A string binária (binaryString) não pode ser nula ou vazia.";
+                    throw new ArgumentException(ErrorMessage);
+                }
+
                 // Converter a string (BSTR) de volta para byte[]
                 byte[] fileData = ConvertBSTRToByteArray(binaryString);
 
@@ -147,6 +159,10 @@ namespace FileStorageCom
 
                         s3Client.PutObject(request);
                     }
+
+                    if (genereteUrl) return GetPreSignedUrl(encodedKeyName, 5);
+                    else return null;
+
                 }
             }
             catch (Exception ex)
@@ -157,7 +173,7 @@ namespace FileStorageCom
             
         }
 
-        public void UploadFile(string keyName, string filePath)
+        public string UploadFile(string keyName, string filePath, bool genereteUrl = false)
         {
             if (string.IsNullOrEmpty(keyName)) 
             {
@@ -183,6 +199,9 @@ namespace FileStorageCom
                         // Fazer upload do arquivo
                         fileTransferUtility.Upload(filePath, _bucketName, keyName);
                     }
+
+                    if (genereteUrl) return GetPreSignedUrl(keyName, 5);
+                    else return null;
                 }
             }
             catch (AmazonS3Exception ex)
@@ -298,7 +317,7 @@ namespace FileStorageCom
                     catch (AmazonS3Exception ex) when (ex.StatusCode == System.Net.HttpStatusCode.NotFound)
                     {
                         // Arquivo não encontrado
-                        ErrorMessage = "O arquivo solicitado não existe no bucket.";
+                        ErrorMessage = $"O arquivo solicitado não existe no bucket. Erro: {ex.Message}";
                         return null;
                     }
                 }
